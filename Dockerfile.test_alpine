@@ -1,0 +1,54 @@
+# /////////////////////////////////////////////////////////////////////////////////////////////////
+# run as:
+#  do:
+#   docker image ls
+#   docker image rm greyling_test_alpine
+#   docker image ls
+#   DOCKER_BUILDKIT=0 docker build -f Dockerfile.test_alpine .
+#   DOCKER_BUILDKIT=0 docker build -f Dockerfile.test_alpine -t greyling_test_alpine . --build-arg os_platform=macos_test
+#   DOCKER_BUILDKIT=0 docker run greyling_test_alpine
+#   - - - -
+#   docker image ls
+#   docker image rm greyling_cbserver
+#   docker image ls
+#   docker build -f Dockerfile.cbserver .
+#   docker build -f Dockerfile.cbserver -t greyling_cbserver . --build-arg os_platform=macos
+#   docker run greyling_cbserver
+#   - - - -
+#   docker image ls
+#   docker image rm greyling_cbsyncgateway
+#   docker image ls
+#   docker build -f Dockerfile.cbsyncgateway .
+#   docker build -f Dockerfile.cbsyncgateway -t greyling_cbsyncgateway . --build-arg os_platform=macos
+#   docker run greyling_cbsyncgateway
+# /////////////////////////////////////////////////////////////////////////////////////////////////
+
+ARG os_platform
+
+FROM alpine:latest AS stage_base
+# FROM couchbase:latest AS stage_base
+WORKDIR /couchbase-docker-compose
+COPY . /couchbase-docker-compose
+RUN echo "-- stage_base: Multi-stage conditional build depending on os_platform argument" && clear && pwd && ls -al
+
+FROM stage_base AS stage_macos_test
+# RUN echo "-- stage_macos_test: ..."
+ENV OS_PLATFORM=stage_macos_test
+
+FROM stage_base AS stage_macos
+# RUN echo "-- stage_macos: ..."
+ENV OS_PLATFORM=stage_macos
+
+FROM stage_base AS stage_windows
+# RUN echo "-- stage_windows: ..."
+ENV VAR=stage_windows
+
+FROM stage_base AS stage_linux
+# RUN echo "-- stage_linux: ..."
+ENV OS_PLATFORM=stage_linux
+
+FROM stage_${os_platform} AS stage_final
+# ENTRYPOINT ["echo", "-- stage_final: OS_PLATFORM is equal to ", "${OS_PLATFORM}"]
+RUN echo "-- stage_final: OS_PLATFORM is equal to ${OS_PLATFORM}"
+
+# /////////////////////////////////////////////////////////////////////////////////////////////////
