@@ -1,0 +1,62 @@
+# /////////////////////////////////////////////////////////////////////////////////////////////////
+# run as:
+#  do:
+#   - - - -
+#   docker image ls
+#   docker container ls
+#   docker image rm greyling_cbsyncgateway
+#   docker image rm greyling_cbserver
+#   docker image ls
+#   docker container ls
+#   docker container inspect greyling_cbsyncgateway
+#   docker container inspect greyling_cbserver
+#   docker-compose build --build-arg os_platform=macos
+#   docker-compose up
+#   - - - -
+# /////////////////////////////////////////////////////////////////////////////////////////////////
+
+version: '3.8'
+services:
+
+  couchbase:
+    hostname: couchbase_server
+    container_name: greyling_cbserver
+    build:
+      context: .
+      dockerfile: ./Dockerfile.cbserver
+    ports:
+     - 8091-8096:8091-8096
+     - 11210:11210
+    volumes:
+      - ./docker/server/startup.sh:/startup.sh
+    environment:  
+      - CLUSTER_NAME=demo
+      - COUCHBASE_ADMINISTRATOR_USERNAME=Administrator
+      - COUCHBASE_ADMINISTRATOR_PASSWORD=password
+      - COUCHBASE_BUCKET=store_local
+      - COUCHBASE_RBAC_USERNAME=admin
+      - COUCHBASE_RBAC_PASSWORD=password
+      - COUCHBASE_RBAC_NAME=admin
+  sync-gateway:
+    hostname: sync_gateway
+    container_name: greyling_cbsyncgateway
+    build:
+      context: .
+      dockerfile: ./Dockerfile.cbsyncgateway
+    entrypoint: ["sh","/config.sh"]
+    ports:
+      - 4984:4984
+      - 4985:4985
+      - 4986:4986
+    depends_on:
+      - couchbase
+    volumes:
+      - ./docker/sync-gateway/template.json:/etc/sync_gateway/template.json
+      - ./docker/sync-gateway/config.sh:/config.sh
+    environment:  
+      - ADMIN_INTERFACE=:4985
+      - INTERFACE=:4984
+      - METRICS_INTERFACE=:4986
+      - REMOTE_ADDRESS=$REMOTEIP
+
+# /////////////////////////////////////////////////////////////////////////////////////////////////
