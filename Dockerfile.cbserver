@@ -1,6 +1,8 @@
 # /////////////////////////////////////////////////////////////////////////////////////////////////
 # docker commands:
 #   docker image ls
+#   docker rm cb-server
+#   - - or - -
 #   docker image rm cb-server
 #   docker image ls
 #   DOCKER_BUILDKIT=0 docker build -f Dockerfile.cbserver -t cb-server .
@@ -15,10 +17,14 @@
 ARG os_platform
 
 # FROM couchbase:latest AS stage_base
-FROM priyacouch/couchbase-server-userprofile:latest AS stage_base
+# FROM priyacouch/couchbase-server-userprofile AS stage_base
+FROM priyacouch/couchbase-server-travelsample:latest AS stage_base
 WORKDIR /couchbase-docker-compose
 COPY . /couchbase-docker-compose
-RUN echo "-- stage_base: Multi-stage conditional build depending on os_platform argument" && clear && pwd && ls -al
+RUN clear && \ 
+    echo "-- stage_base: Multi-stage conditional cb-server build depending on os_platform argument" && \
+    pwd && \
+    ls -al
 
 FROM stage_base AS stage_macos_test
 # RUN echo "-- stage_macos_test: ..."
@@ -37,7 +43,7 @@ FROM stage_base AS stage_linux
 ENV OS_PLATFORM=stage_linux
 
 FROM stage_${os_platform} AS cb-server
-# ENTRYPOINT ["echo", "-- stage_final: OS_PLATFORM is ", "${OS_PLATFORM}"]
-RUN echo "-- stage_final: OS_PLATFORM is ${OS_PLATFORM}"
+# ENTRYPOINT ["echo", "-- stage_final: os_platform is ", "${os_platform}"]
+RUN echo "-- stage_final: os_platform is ${os_platform}"
 
 # /////////////////////////////////////////////////////////////////////////////////////////////////

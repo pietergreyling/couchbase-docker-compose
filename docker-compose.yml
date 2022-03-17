@@ -1,13 +1,17 @@
 # /////////////////////////////////////////////////////////////////////////////////////////////////
 # docker commands:
 #   docker image ls
-#   docker container ls
-#   docker image rm cb-server
-#   docker image rm sync-gateway
+#   docker container ls -a
+#   docker rm sync-gateway
+#   docker rm cb-server
+#   - - or - -
+#   docker container rm sync-gateway
+#   docker container rm cb-server
 #   docker image ls
-#   docker container ls
+#   docker container ls -a
 #   docker-compose build
 #   docker-compose build --build-arg os_platform=macos
+#   DOCKER_BUILDKIT=0 docker-compose build --build-arg os_platform=macos
 #   docker container inspect cb-server
 #   docker container inspect sync-gateway
 #   docker-compose up
@@ -21,11 +25,13 @@ version: '3.9'
 services:
 
   couchbase:
-    # hostname: cb-server
-    # container_name: cb-server
+    hostname: cb-server
+    container_name: cb-server
     build:
-      context: .
+      context: ./
       dockerfile: ./Dockerfile.cbserver
+    stdin_open: true
+    tty: true      
     networks:
       - workshop
     ports:
@@ -43,12 +49,14 @@ services:
       - COUCHBASE_RBAC_NAME=admin
 
   sync-gateway:
-    # hostname: sync-gateway
-    # container_name: sync-gateway
+    hostname: sync-gateway
+    container_name: sync-gateway
     build:
-      context: .
+      context: ./
       dockerfile: ./Dockerfile.cbsyncgateway
     # entrypoint: ["sh","/config.sh"]
+    stdin_open: true
+    tty: true      
     networks:
       - workshop
     ports:
