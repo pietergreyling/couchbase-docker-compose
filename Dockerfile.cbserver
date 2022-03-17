@@ -1,31 +1,21 @@
 # /////////////////////////////////////////////////////////////////////////////////////////////////
-# run as:
-#  do:
+# docker commands:
 #   docker image ls
-#   docker image rm greyling_test_alpine
+#   docker image rm cb-server
 #   docker image ls
-#   DOCKER_BUILDKIT=0 docker build -f Dockerfile.test_alpine .
-#   DOCKER_BUILDKIT=0 docker build -f Dockerfile.test_alpine -t greyling_test_alpine . --build-arg os_platform=macos_test
-#   DOCKER_BUILDKIT=0 docker run greyling_test_alpine
-#   - - - -
-#   docker image ls
-#   docker image rm greyling_cbserver
-#   docker image ls
-#   docker build -f Dockerfile.cbserver .
-#   docker build -f Dockerfile.cbserver -t greyling_cbserver . --build-arg os_platform=macos
-#   docker run greyling_cbserver
-#   - - - -
-#   docker image ls
-#   docker image rm greyling_cbsyncgateway
-#   docker image ls
-#   docker build -f Dockerfile.cbsyncgateway .
-#   docker build -f Dockerfile.cbsyncgateway -t greyling_cbsyncgateway . --build-arg os_platform=macos
-#   docker run greyling_cbsyncgateway
+#   DOCKER_BUILDKIT=0 docker build -f Dockerfile.cbserver -t cb-server .
+#   DOCKER_BUILDKIT=0 docker build -f Dockerfile.cbserver -t cb-server . --build-arg os_platform=macos
+#   DOCKER_BUILDKIT=0 docker run cb-server
+#   echo "-- displaying cb-server logs ctrl-c to exit ..."
+#   docker logs -f cb-server
+#   echo "-- displaying sync-gateway logs ctrl-c to exit ..."
+#   docker logs -f sync-gateway 
 # /////////////////////////////////////////////////////////////////////////////////////////////////
 
 ARG os_platform
 
-FROM couchbase:latest AS stage_base
+# FROM couchbase:latest AS stage_base
+FROM priyacouch/couchbase-server-userprofile:latest AS stage_base
 WORKDIR /couchbase-docker-compose
 COPY . /couchbase-docker-compose
 RUN echo "-- stage_base: Multi-stage conditional build depending on os_platform argument" && clear && pwd && ls -al
@@ -46,7 +36,7 @@ FROM stage_base AS stage_linux
 # RUN echo "-- stage_linux: ..."
 ENV OS_PLATFORM=stage_linux
 
-FROM stage_${os_platform} AS stage_final
+FROM stage_${os_platform} AS cb-server
 # ENTRYPOINT ["echo", "-- stage_final: OS_PLATFORM is ", "${OS_PLATFORM}"]
 RUN echo "-- stage_final: OS_PLATFORM is ${OS_PLATFORM}"
 

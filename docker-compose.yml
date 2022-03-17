@@ -1,62 +1,70 @@
 # /////////////////////////////////////////////////////////////////////////////////////////////////
-# run as:
-#  do:
-#   - - - -
+# docker commands:
 #   docker image ls
 #   docker container ls
-#   docker image rm greyling_cbsyncgateway
-#   docker image rm greyling_cbserver
+#   docker image rm cb-server
+#   docker image rm sync-gateway
 #   docker image ls
 #   docker container ls
-#   docker container inspect greyling_cbsyncgateway
-#   docker container inspect greyling_cbserver
+#   docker-compose build
 #   docker-compose build --build-arg os_platform=macos
+#   docker container inspect cb-server
+#   docker container inspect sync-gateway
 #   docker-compose up
-#   - - - -
+#   echo "-- displaying cb-server logs ctrl-c to exit ..."
+#   docker logs -f cb-server
+#   echo "-- displaying sync-gateway logs ctrl-c to exit ..."
+#   docker logs -f sync-gateway 
 # /////////////////////////////////////////////////////////////////////////////////////////////////
 
-version: '3.8'
+version: '3.9'
 services:
 
   couchbase:
-    hostname: couchbase_server
-    container_name: greyling_cbserver
+    # hostname: cb-server
+    # container_name: cb-server
     build:
       context: .
       dockerfile: ./Dockerfile.cbserver
+    networks:
+      - workshop
     ports:
      - 8091-8096:8091-8096
      - 11210:11210
-    volumes:
-      - ./docker/server/startup.sh:/startup.sh
+    # volumes:
+    #   - ./docker/server/startup.sh:/startup.sh
     environment:  
-      - CLUSTER_NAME=demo
+      - CLUSTER_NAME=couchbase-demo
       - COUCHBASE_ADMINISTRATOR_USERNAME=Administrator
       - COUCHBASE_ADMINISTRATOR_PASSWORD=password
       - COUCHBASE_BUCKET=store_local
       - COUCHBASE_RBAC_USERNAME=admin
       - COUCHBASE_RBAC_PASSWORD=password
       - COUCHBASE_RBAC_NAME=admin
+
   sync-gateway:
-    hostname: sync_gateway
-    container_name: greyling_cbsyncgateway
+    # hostname: sync-gateway
+    # container_name: sync-gateway
     build:
       context: .
       dockerfile: ./Dockerfile.cbsyncgateway
-    entrypoint: ["sh","/config.sh"]
+    # entrypoint: ["sh","/config.sh"]
+    networks:
+      - workshop
     ports:
-      - 4984:4984
-      - 4985:4985
-      - 4986:4986
+      - 4984-4986:4984-4986
     depends_on:
       - couchbase
-    volumes:
-      - ./docker/sync-gateway/template.json:/etc/sync_gateway/template.json
-      - ./docker/sync-gateway/config.sh:/config.sh
+    # volumes:
+    #   - ./src/sync-gateway-config.json
     environment:  
       - ADMIN_INTERFACE=:4985
       - INTERFACE=:4984
       - METRICS_INTERFACE=:4986
       - REMOTE_ADDRESS=$REMOTEIP
+
+networks:
+  workshop:
+    driver: bridge
 
 # /////////////////////////////////////////////////////////////////////////////////////////////////
