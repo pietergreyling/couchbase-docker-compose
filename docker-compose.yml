@@ -11,7 +11,10 @@
 #   docker container ls -a
 #   docker-compose build
 #   docker-compose build --build-arg os_platform=macos
+#   BUILDKIT_PROGRESS=plain docker-compose build --build-arg os_platform=macos  <<===!!!
+#   DOCKER_BUILDKIT=1 docker-compose build --build-arg os_platform=macos
 #   DOCKER_BUILDKIT=0 docker-compose build --build-arg os_platform=macos
+#   docker-compose config
 #   docker container inspect cb-server
 #   docker container inspect sync-gateway
 #   docker-compose up
@@ -30,6 +33,8 @@ services:
     build:
       context: ./
       dockerfile: ./Dockerfile.cbserver
+    image: cb-server:latest
+    working_dir: /couchbase-docker-compose
     stdin_open: true
     tty: true      
     networks:
@@ -54,6 +59,8 @@ services:
     build:
       context: ./
       dockerfile: ./Dockerfile.cbsyncgateway
+    image: sync-gateway:latest
+    working_dir: /couchbase-docker-compose
     # entrypoint: ["sh","/config.sh"]
     stdin_open: true
     tty: true      

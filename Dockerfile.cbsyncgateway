@@ -4,10 +4,16 @@
 #   docker rm sync-gateway
 #   - - or - -
 #   docker image rm sync-gateway
-#   docker image ls
+#   docker image ls -a
+#   docker build --progress=plain -f Dockerfile.cbsyncgateway -t sync-gateway . --build-arg os_platform=macos
 #   DOCKER_BUILDKIT=0 docker build -f Dockerfile.cbsyncgateway -t sync-gateway .
 #   DOCKER_BUILDKIT=0 docker build -f Dockerfile.cbsyncgateway -t sync-gateway . --build-arg os_platform=macos
+#   DOCKER_BUILDKIT=0 docker build --progress=plain -f Dockerfile.cbsyncgateway -t sync-gateway . --build-arg os_platform=macos
+#   DOCKER_BUILDKIT=1 docker build --progress=plain -f Dockerfile.cbsyncgateway -t sync-gateway . --build-arg os_platform=macos     <<===!!!
+#   DOCKER_BUILDKIT=0 docker run cb-server
+#   docker run -d --name cb-server
 #   DOCKER_BUILDKIT=0 docker run sync-gateway
+#   docker run -d --name sync-gateway
 #   echo "-- displaying cb-server logs ctrl-c to exit ..."
 #   docker logs -f cb-server
 #   echo "-- displaying sync-gateway logs ctrl-c to exit ..."
@@ -18,9 +24,10 @@ ARG os_platform
 
 FROM couchbase/sync-gateway:latest AS stage_base
 WORKDIR /couchbase-docker-compose
-# COPY . /couchbase-docker-compose
-RUN clear && \
-    echo "-- stage_base: Multi-stage conditional sync-gateway build depending on os_platform argument"  && \
+COPY . /couchbase-docker-compose
+# RUN export TERM=xterm && \
+    # clear && echo "-- stage_base: Multi-stage conditional sync-gateway build depending on os_platform argument" && pwd && ls -al
+RUN echo "-- stage_base: Multi-stage conditional sync-gateway build depending on os_platform argument"  && \
     pwd && \
     ls -al
 
@@ -41,7 +48,7 @@ FROM stage_base AS stage_linux
 ENV OS_PLATFORM=stage_linux
 
 FROM stage_${os_platform} AS sync-gateway
-# ENTRYPOINT ["echo", "-- stage_final: os_platform is ", "${os_platform}"]
-RUN echo "-- stage_final: os_platform is ${os_platform}"
+# ENTRYPOINT ["echo", "-- stage_final: OS_PLATFORM is ", "${OS_PLATFORM}"]
+RUN echo "-- stage_final: OS_PLATFORM is ${OS_PLATFORM}"
 
 # /////////////////////////////////////////////////////////////////////////////////////////////////
