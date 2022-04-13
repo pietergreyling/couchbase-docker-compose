@@ -1,17 +1,19 @@
 # /////////////////////////////////////////////////////////////////////////////////////////////////
-# docker commands:
+# run: 
+#   BUILDKIT_PROGRESS=plain docker-compose build --build-arg os_platform=macos
+# - - - -
+# useful docker commands:
 #   docker image ls
 #   docker container ls -a
 #   docker rm sync-gateway
 #   docker rm cb-server
-#   - - or - -
+#   - - - -
 #   docker container rm sync-gateway
 #   docker container rm cb-server
 #   docker image ls
 #   docker container ls -a
 #   docker-compose build
 #   docker-compose build --build-arg os_platform=macos
-#   BUILDKIT_PROGRESS=plain docker-compose build --build-arg os_platform=macos  <<===!!!
 #   DOCKER_BUILDKIT=1 docker-compose build --build-arg os_platform=macos
 #   DOCKER_BUILDKIT=0 docker-compose build --build-arg os_platform=macos
 #   docker-compose config
@@ -35,6 +37,7 @@ services:
       dockerfile: ./Dockerfile.cbserver
     image: cb-server:latest
     working_dir: /couchbase-docker-compose
+    # env_file: .env
     stdin_open: true
     tty: true      
     networks:
@@ -56,11 +59,14 @@ services:
   sync-gateway:
     hostname: sync-gateway
     container_name: sync-gateway
+    depends_on:
+      - couchbase
     build:
       context: ./
       dockerfile: ./Dockerfile.cbsyncgateway
     image: sync-gateway:latest
     working_dir: /couchbase-docker-compose
+    # env_file: .env
     # entrypoint: ["sh","/config.sh"]
     stdin_open: true
     tty: true      
@@ -68,8 +74,6 @@ services:
       - workshop
     ports:
       - 4984-4986:4984-4986
-    depends_on:
-      - couchbase
     # volumes:
     #   - ./src/sync-gateway-config.json
     environment:  

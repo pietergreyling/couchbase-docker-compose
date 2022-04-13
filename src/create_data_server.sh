@@ -1,3 +1,5 @@
+#!/bin/bash
+
 curl -v -X POST http://localhost:8091/pools/default/buckets \
 -u Administrator:password \
 -d name=projects \

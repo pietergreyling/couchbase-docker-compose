@@ -1,4 +1,5 @@
 #!/bin/bash
+
 echo "stopping sync-gateway  ..."
 docker stop sync-gateway
 echo "deleting sync-gateway  ..."
