@@ -1,7 +1,7 @@
 # couchbase-docker-compose
 **Couchbase Server and Sync Gateway Developer Environment Setup with Docker / Docker Compose**
 
-###Cloning this repository
+### Cloning this repository
 
 `git clone https://github.com/pietergreyling/couchbase-docker-compose.git`
 
@@ -23,13 +23,13 @@ This invokes the `Dockerfile.cbserver` and `Dockerfile.cbsyncgateway` docker fil
 `DOCKER_BUILDKIT=1 docker build --progress=plain -f Dockerfile.cbsyncgateway -t sync-gateway . --build-arg os_platform=macos`
 
 
-###License
+### License
 
 ***This is not an official Couchbase product and is a work in progress!***
 
 Feel free to create Git branches and contribute.
 
-**MIT License**
+**[MIT License](https://opensource.org/licenses/MIT)**
 
 Copyright (c) 2022 Pieter Greyling
 
