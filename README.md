@@ -1,12 +1,10 @@
-## couchbase-docker-compose
-
 # Couchbase Server and Sync Gateway Developer Environment Setup with Docker Compose
 
-### Cloning this repository
+### How to clone this repository
 
 `git clone https://github.com/pietergreyling/couchbase-docker-compose.git`
 
-### Install [Docker Desktop](https://docs.docker.com/desktop/) for your OS
+### Prerequisites: Install [Docker Desktop](https://docs.docker.com/desktop/) for your OS
 
 **macOS**
 
@@ -20,7 +18,7 @@
 
 * [https://docs.docker.com/desktop/linux/install/](https://docs.docker.com/desktop/linux/install/)
 
-### Running local setup + provisioning of Couchbase Server and Sync Gateway with Docker Compose
+### How to run and provision the servers
 
 #### Build and run the `./couchbase-server` and `./sync-gateway` Docker build files:
 
