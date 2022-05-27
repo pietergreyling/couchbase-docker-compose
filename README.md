@@ -5,23 +5,51 @@
 
 `git clone https://github.com/pietergreyling/couchbase-docker-compose.git`
 
+### Install Docker Desktop for your OS
+
+#### macOS
+[https://docs.docker.com/desktop/mac/install/](https://docs.docker.com/desktop/mac/install/)
+
 
 ### Running local setup + provisioning of Couchbase Server and Sync Gateway with Docker Compose
 
-This invokes the `./couchbase-server` and `./sync-gateway` Docker build files:
+#### This invokes and runs the `./couchbase-server` and `./sync-gateway` Docker build files:
 
 `docker-compose up --detach`
 
-Show the running Docker images with:
+#### Show the running Docker images with:
 
 `docker ps`
 
-Inspect the logs:
+#### Inspect the logs:
 
 `docker logs couchbase-server`
 
 `docker logs sync-gateway`
 
+#### Verify with CURL on the commandline:
+
+**Couchbase Server**:
+
+`curl http://localhost:8092`
+
+Expected response:
+
+`... {"couchdb":"Welcome"}`
+
+**Couchbase Sync Gateway**:
+
+`curl http://localhost:4984`
+
+Expected response:
+
+`...
+{"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"3.0"},"version":"Couchbase Sync Gateway/3.0.0(541;46803d1) EE"}%`
+
+
+### Resources
+
+[Getting Comfortable with Couchbase Mobile: Sync Gateway via the Command Line](https://blog.couchbase.com/getting-comfortable-with-couchbase-mobile-sync-gateway-via-the-command-line/)
 
 
 ### License
