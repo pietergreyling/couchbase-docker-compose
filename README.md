@@ -6,21 +6,11 @@
 `git clone https://github.com/pietergreyling/couchbase-docker-compose.git`
 
 
-### Running local setup/provisioning of both Couchbase Server and Sync Gateway with Docker Compose
+### Running local setup + provisioning of Couchbase Server and Sync Gateway with Docker Compose
 
-This invokes the `Dockerfile.cbserver` and `Dockerfile.cbsyncgateway` docker files. See below for how to run these separately with the docker command. 
+This invokes the `./couchbase-server` and `./sync-gateway` Docker build files.
 
-`BUILDKIT_PROGRESS=plain docker-compose build --build-arg os_platform=macos`
-
-
-### Running local Couchbase Server setup/provisioning with Docker using the Docker file directly
-
-`DOCKER_BUILDKIT=1 docker build --progress=plain -f Dockerfile.cbserver -t cb-server . --build-arg os_platform=macos`
-
-
-### Running local Couchbase Sync Gateway setup/provisioning with Docker using the Docker file directly
-
-`DOCKER_BUILDKIT=1 docker build --progress=plain -f Dockerfile.cbsyncgateway -t sync-gateway . --build-arg os_platform=macos`
+`docker-compose up --detach`
 
 
 ### License
