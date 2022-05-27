@@ -1,25 +1,44 @@
-# couchbase-docker-compose
-**Couchbase Server and Sync Gateway Developer Environment Setup with Docker / Docker Compose**
+## couchbase-docker-compose
+
+# Couchbase Server and Sync Gateway Developer Environment Setup with Docker Compose
 
 ### Cloning this repository
 
 `git clone https://github.com/pietergreyling/couchbase-docker-compose.git`
 
-### Install Docker Desktop for your OS
+### Install [Docker Desktop](https://docs.docker.com/desktop/) for your OS
 
-#### macOS
-[https://docs.docker.com/desktop/mac/install/](https://docs.docker.com/desktop/mac/install/)
+**macOS**
 
+* [https://docs.docker.com/desktop/mac/install/](https://docs.docker.com/desktop/mac/install/)
+
+**Windows**
+
+* [https://docs.docker.com/desktop/windows/install/](https://docs.docker.com/desktop/windows/install/)
+
+**Linux**
+
+* [https://docs.docker.com/desktop/linux/install/](https://docs.docker.com/desktop/linux/install/)
 
 ### Running local setup + provisioning of Couchbase Server and Sync Gateway with Docker Compose
 
-#### This invokes and runs the `./couchbase-server` and `./sync-gateway` Docker build files:
+#### Build and run the `./couchbase-server` and `./sync-gateway` Docker build files:
 
 `docker-compose up --detach`
 
-#### Show the running Docker images with:
+#### Show the running images with:
 
 `docker ps`
+
+or,
+
+`docker container ls`
+
+Expected response:
+
+`CONTAINER ID   IMAGE                                       COMMAND                  CREATED          STATUS          PORTS                                                                                               NAMES`
+`8a9ac3f1b260   couchbase-docker-compose_couchbase-server   "sh -c /opt/couchbas…"   50 minutes ago   Up 50 minutes   0.0.0.0:8091-8096->8091-8096/tcp, 11207/tcp, 11211/tcp, 0.0.0.0:11210->11210/tcp, 18091-18096/tcp   couchbase-server`
+
 
 #### Inspect the logs:
 
@@ -46,10 +65,15 @@ Expected response:
 `...
 {"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"3.0"},"version":"Couchbase Sync Gateway/3.0.0(541;46803d1) EE"}%`
 
+#### How to stop the running images
 
-### Resources
+`docker-compose stop`
 
-[Getting Comfortable with Couchbase Mobile: Sync Gateway via the Command Line](https://blog.couchbase.com/getting-comfortable-with-couchbase-mobile-sync-gateway-via-the-command-line/)
+`[+] Running 2/2`
+
+`⠿ Container couchbase-server  Stopped 10.5s`                                                                                                          
+
+`⠿ Container sync-gateway      Stopped 0.0s`
 
 
 ### License
