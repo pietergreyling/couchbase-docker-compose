@@ -1,4 +1,4 @@
-# For Developers: A Couchbase Server and Sync Gateway Environment Setup with Docker Compose
+# How to create a Couchbase Server and Sync Gateway Developer Environment with Docker Compose
 
 ### How to clone this repository
 
