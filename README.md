@@ -1,4 +1,4 @@
-# Couchbase Server and Sync Gateway Developer Environment Setup with Docker Compose
+# For Developers: A Couchbase Server and Sync Gateway Environment Setup with Docker Compose
 
 ### How to clone this repository
 
@@ -20,52 +20,23 @@
 
 ### How to run and provision the servers
 
-#### Build and run the `./couchbase-server` and `./sync-gateway` Docker build files:
+#### Build and start the `./couchbase-server` and `./sync-gateway` Docker build files:
 
-`docker-compose up --detach`
-
-#### Show the running images with:
-
-`docker ps`
-
-or,
-
-`docker container ls`
+* `docker-compose up --detach`
 
 Expected response:
 
-`CONTAINER ID   IMAGE                                       COMMAND                  CREATED          STATUS          PORTS                                                                                               NAMES`
-`8a9ac3f1b260   couchbase-docker-compose_couchbase-server   "sh -c /opt/couchbas…"   50 minutes ago   Up 50 minutes   0.0.0.0:8091-8096->8091-8096/tcp, 11207/tcp, 11211/tcp, 0.0.0.0:11210->11210/tcp, 18091-18096/tcp   couchbase-server`
+`[+] Running 1/2`
 
-
-#### Inspect the logs:
-
-`docker logs couchbase-server`
-
-`docker logs sync-gateway`
-
-#### Verify with CURL on the commandline:
-
-**Couchbase Server**:
-
-`curl http://localhost:8092`
-
-Expected response:
-
-`... {"couchdb":"Welcome"}`
-
-**Couchbase Sync Gateway**:
-
-`curl http://localhost:4984`
-
-Expected response:
-
-`...
-{"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"3.0"},"version":"Couchbase Sync Gateway/3.0.0(541;46803d1) EE"}%`
+` ⠿ Container couchbase-server  Started        0.4s`
+                                                                                                 
+` ⠼ Container sync-gateway      Starting       0.4s`
 
 #### How to stop the running images
 
-`docker-compose stop`
+* `docker-compose stop`
+
+Expected response:
 
 `[+] Running 2/2`
 
@@ -73,6 +44,43 @@ Expected response:
 
 `⠿ Container sync-gateway      Stopped 0.0s`
 
+
+#### Show the running images with:
+
+* `docker ps`
+
+* `docker container ls`
+
+Expected responses:
+
+`CONTAINER ID   IMAGE                                       COMMAND                  CREATED          STATUS          PORTS                                                                                               NAMES`
+`8a9ac3f1b260   couchbase-docker-compose_couchbase-server   "sh -c /opt/couchbas…"   50 minutes ago   Up 50 minutes   0.0.0.0:8091-8096->8091-8096/tcp, 11207/tcp, 11211/tcp, 0.0.0.0:11210->11210/tcp, 18091-18096/tcp   couchbase-server`
+
+
+#### Inspect the logs:
+
+* `docker logs couchbase-server`
+
+* `docker logs sync-gateway`
+
+#### Verify with CURL on the commandline:
+
+**Couchbase Server**:
+
+* `curl http://localhost:8092`
+
+Expected response:
+
+`... {"couchdb":"Welcome"}`
+
+**Couchbase Sync Gateway**:
+
+* `curl http://localhost:4984`
+
+Expected response:
+
+`...
+{"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"3.0"},"version":"Couchbase Sync Gateway/3.0.0(541;46803d1) EE"}%`
 
 ### License
 
