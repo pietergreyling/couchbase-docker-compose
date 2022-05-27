@@ -8,9 +8,20 @@
 
 ### Running local setup + provisioning of Couchbase Server and Sync Gateway with Docker Compose
 
-This invokes the `./couchbase-server` and `./sync-gateway` Docker build files.
+This invokes the `./couchbase-server` and `./sync-gateway` Docker build files:
 
 `docker-compose up --detach`
+
+Show the running Docker images with:
+
+`docker ps`
+
+Inspect the logs:
+
+`docker logs couchbase-server`
+
+`docker logs sync-gateway`
+
 
 
 ### License
